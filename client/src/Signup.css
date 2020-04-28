@@ -1,0 +1,29 @@
+.container {
+    position: relative;
+    height: 500px;
+
+    padding-top: 20%;
+}
+.username-container {
+    width: 200px;
+    height: 50px;
+    margin: 5px auto;
+}
+.password-container { 
+    width: 200px;
+    height: 50px;
+    margin: 5px auto;
+}
+.errmsg {
+    width: 200px;
+    height: 30px;
+    margin: 5px auto;
+
+    font-size: small;
+    color: red;
+}
+.submit-container {
+    width: 200px;
+    height: 30px;
+    margin: 5px auto;
+}
