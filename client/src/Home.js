@@ -49,7 +49,7 @@ export default class Home extends React.Component {
             return 'loading...';
         } else {
             if (!this.state.isAuthenticated) {
-                return <Redirect to="/signup"/>
+                return <Redirect to="/login"/>
             }
             
             return <Account/>
