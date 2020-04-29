@@ -15,7 +15,20 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-var users = {};
+var User = function(username, password) {
+    let self = {};
+    
+    self.username = username;
+    self.password = password;
+
+    self.beets = [];
+
+    return self;
+};
+
+var users = {
+    admin: User('admin', '123')
+};
   
 app.post('/signup', (req, res, next) => {
     const responseBody = { err: false, msg: '' };
@@ -25,7 +38,7 @@ app.post('/signup', (req, res, next) => {
         responseBody.err = true;
         responseBody.msg = 'Username already exists!';
     } else {
-        users[req.body.username] = req.body.password;
+        users[data.username] = User(data.username, data.password);
         console.log(users);
     }
 
@@ -36,12 +49,27 @@ app.post('/login', (req, res, next) => {
     const responseBody = { err: true, msg: '' };
     let data = req.body;
 
-    if (users[data.username] === data.password){
+    if (users[data.username].password === data.password){
         responseBody.err = false;
         responseBody.msg = '';
     }
 
     res.send(JSON.stringify(responseBody));
+});
+
+app.post('/profile', (req, res, next) => {
+    let data = req.body;
+
+    res.send(JSON.stringify(users[data.username]));
+});
+
+app.post('/tweet', (req, res, next) => {
+    let data = req.body;
+
+    users[data.user.username].beets.push(data.tweet);
+    console.log(users[data.user.username].beets);
+
+    res.send(JSON.stringify('Success'));
 });
 
 app.listen(PORT);

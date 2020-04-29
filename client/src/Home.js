@@ -10,6 +10,8 @@ export default class Home extends React.Component {
         super(props);
 
         this.state = {
+            user: undefined,
+
             isLoading: true,
             isAuthenticated: false
         };
@@ -17,6 +19,7 @@ export default class Home extends React.Component {
 
     authenticate = async () => {
         let user = {username: load('username'), password: load('password')};
+        this.setState({user: user});
 
         if (user.username === undefined || user.password === undefined) {
             // immediately ask for login
@@ -28,8 +31,6 @@ export default class Home extends React.Component {
             body: JSON.stringify(user)
         };
 
-        console.log(rOptions.body);
-
         let status = await fetch('http://localhost:3001/login', rOptions);
         return status.json();
     };
@@ -39,7 +40,7 @@ export default class Home extends React.Component {
         status.then(data => {
             this.setState({
                 isLoading: false,
-                isAuthenticated: data.err
+                isAuthenticated: !data.err
             });
         });
     }
@@ -52,7 +53,7 @@ export default class Home extends React.Component {
                 return <Redirect to="/login"/>
             }
             
-            return <Account/>
+            return <Account username={this.state.user.username} password={this.state.user.password}/>
         }
     };
 }   

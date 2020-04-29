@@ -26,6 +26,7 @@ export default class Login extends React.Component {
     };
 
     handleSubmit = () => {
+
         if(this.state.username === '' || this.state.password === ''){
             this.setState({err: true, msg: 'Please fill out all fields!'});
             return;
@@ -41,12 +42,14 @@ export default class Login extends React.Component {
 
         fetch('http://localhost:3001/login', rOptions).then( res => {
             res.json().then( data => {
+                save('username', this.state.username, {path: '/'});
+                save('password', this.state.password, {path: '/'});
+
                 if (data.err) {
                     this.setState({ err: true, msg: data.msg });
                     this.setState({ username: '', password: ''});
-                } else {
 
-                    save('username', this.state.username, {path: '/'});
+                } else {
 
                     // redirect
                     this.setState({authDidSucceed: true});

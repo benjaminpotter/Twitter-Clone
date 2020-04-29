@@ -1,7 +1,7 @@
 import React from 'react';
-import { save } from 'react-cookies';
 
 import './Signup.css';
+import { Redirect } from 'react-router';
 
 export default class Signup extends React.Component {
 
@@ -9,6 +9,8 @@ export default class Signup extends React.Component {
         super(props);
 
         this.state = {
+            didSucceed: false,
+
             username: '',
             password: '',
             err: false,
@@ -48,7 +50,7 @@ export default class Signup extends React.Component {
                     //save('username', this.state.username, {path: '/'});
 
                     // redirect to login
-                    
+                    this.setState({didSucceed: true});
                 }
             });
         });
@@ -63,31 +65,35 @@ export default class Signup extends React.Component {
     };
 
     render() {
-        return (<div>
-            <h1>Signup</h1>
-            <div className="container">
-                
-                <div className="username-container">
-                    <label>
-                        Username:
-                        <input value={this.state.username} type="text" placeholder="username" onChange={this.handleUsername} />
-                    </label>
-                </div>
-    
-                <div className="password-container">
-                    <label>
-                        Password:
-                        <input value={this.state.password} type="password" placeholder="password" onChange={this.handlePassword} />
-                    </label>
-                </div>
-                
-                { this.hasError() }
-    
-                <div className="submit-container"> 
-                    <button onClick={this.handleSubmit}> Signup! </button>
+        if (this.state.didSucceed){
+            return <Redirect to="/login"/>
+        } else {
+            return (<div>
+                <h1>Signup</h1>
+                <div className="container">
+                    
+                    <div className="username-container">
+                        <label>
+                            Username:
+                            <input value={this.state.username} type="text" placeholder="username" onChange={this.handleUsername} />
+                        </label>
+                    </div>
+        
+                    <div className="password-container">
+                        <label>
+                            Password:
+                            <input value={this.state.password} type="password" placeholder="password" onChange={this.handlePassword} />
+                        </label>
+                    </div>
+                    
+                    { this.hasError() }
+        
+                    <div className="submit-container"> 
+                        <button onClick={this.handleSubmit}> Signup! </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        )
+            )
+        }
     }
 }
